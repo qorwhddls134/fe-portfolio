@@ -3,24 +3,22 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Intro 첫 화면 높이 — Header nav 높이와 동기화 (모바일 h-12, sm+ h-16) */
+  --layout-header-height: 3rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 40rem) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --layout-header-height: 4rem;
   }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-pretendard), ui-sans-serif, system-ui, sans-serif;
 }
