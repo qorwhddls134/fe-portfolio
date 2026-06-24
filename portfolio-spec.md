@@ -11,15 +11,15 @@
 
 ## Page Assembly (`src/app/page.tsx`)
 * Server Component only. 비즈니스 로직·긴 마크업 금지.
-* **섹션 순서:** Intro → About → Education → Projects
+* **섹션 순서:** Intro → Education → Projects
 * **DOM 구조:**
     * `<Header />` (sticky, `main` 밖)
     * Intro 전용 래퍼 — `max-w-5xl` + `INTRO_VIEWPORT_CLASS` (`constants/layout.ts`)
-    * `<main>` — About · Education · Projects만 (`gap-24`, `pt-24`로 Intro와 간격)
+    * `<main>` — Education · Projects (`MAIN_AFTER_INTRO_CLASS` — Intro 직후 `pt-12`/`md:pt-16`)
     * `<Footer />`
 * 공통 가로 레이아웃: `mx-auto w-full max-w-5xl px-4 md:px-8`
-* 각 섹션: `id` 부여 (`intro`, `about`, `education`, `projects`)
-* **Header Navigation:** 상단 sticky 목차(`Intro / About / Education / Projects`)를 제공하고, 클릭 시 해당 섹션으로 부드럽게 이동. **640px 미만**(`sm` 미만)은 햄버거·오버레이, **640px 이상**은 가로 목차 (`ai-rules.md` §3)
+* 각 섹션: `id` 부여 (`intro`, `education`, `projects`)
+* **Header Navigation:** 상단 sticky 목차(`Intro / Education / Projects`)를 제공하고, 클릭 시 해당 섹션으로 부드럽게 이동. **640px 미만**(`sm` 미만)은 햄버거·오버레이, **640px 이상**은 가로 목차 (`ai-rules.md` §3)
 * **Active Section Highlight:** 스크롤 위치에 따라 현재 섹션 목차를 하이라이트
 * 푸터: Contact 영역 포함 (`SITE_EMAIL`, `SITE_GITHUB` 재노출)
 
@@ -59,19 +59,7 @@
 
 ---
 
-## 2. About Component
-* **Path:** `src/components/About.tsx`
-* **Section Title:** "About Me" (`<h2>` 또는 `aria-labelledby` 대상)
-* **UI Layout:** 섹션 제목 "About Me" 상단 배치 후, 하단에 3열 그리드(`grid grid-cols-1 md:grid-cols-3`)로 카드 구조화. 핵심 키워드는 Bold(`<strong>` 또는 `font-semibold`) 처리.
-* **Card Titles:** 01. 시작점 / 02. 터닝 포인트 / 03. 향후 목표
-* **Content Text:**
-    * **01. 시작점 (웹에 빠진 계기):** 코딩의 결과가 바로 확인되는 화면 구현의 매력에 빠져 개발을 시작했습니다. 대학 졸업 후 퍼블리셔 수업을 들으며 능력을 키웠지만, 단순 UI 구현을 넘어 **데이터 처리와 유저 인터랙션을 제어하는 '프론트엔드 개발'**에 강한 매력을 느껴 코드잇 스프린트에 합류했습니다.
-    * **02. 터닝 포인트 (6개월의 교훈):** 잘 만든 UI는 **탄탄한 기본기와 팀과의 소통** 위에 세워진다는 것을 깨달았습니다. 혼자 빠르게 끝내는 코드보다, **코드 리뷰와 공식 문서 기반 학습**으로 깊게 이해한 내용이 실제 프로젝트에서 훨씬 견고하게 남는다는 것을 경험했습니다.
-    * **03. 향후 목표 (Next Step):** 탄탄한 퍼블리싱 감각을 살리면서도 **데이터·상태·웹 접근성**을 책임지는 개발자가 되겠습니다. 단기적으로는 **TypeScript와 React/Next.js 생태계**를 깊게 다루며 웹 표준을 의식하고, 장기적으로는 팀과 함께 지속 가능한 제품을 만드는 일원이 되겠습니다.
-
----
-
-## 3. Education Component
+## 2. Education Component
 * **Path:** `src/components/Education.tsx`
 * **Section Title:** "Education"
 * **UI Layout:** 모바일·데스크톱 공통 — 세로 리스트(카드형). 각 Item은 기간·교육 기관·과정명·내용 4필드를 한눈에 스캔 가능하게 배치.
@@ -89,7 +77,7 @@
 
 ---
 
-## 4. Projects Component
+## 3. Projects Component
 * **Path:** `src/components/Projects.tsx`
 * **Section Title:** "Projects"
 * **1차 구현:** 정적 레이아웃만 (`'use client'` 없음). 상단 요약 블록 + 하단 상세 블록을 세로로 배치.
@@ -97,7 +85,7 @@
     * 상단: 프로젝트명·한 줄 소개·역할·기여도
     * 하단: My Tasks(목록) + Troubleshooting(단락)
     * Mockup placeholder: `aspect-video w-full rounded border border-dashed` 등 이미지 확정 전 placeholder `<div>`
-* **Links:** Repository·Demo URL은 `src/data/projects.ts` (없으면 "준비 중" 표시)
+* **Links:** 깃허브 URL·사이트 URL은 `src/data/projects.ts`의 `githubUrl`, `deployUrl` (없으면 "준비 중" 표시)
 * **Tech Stack:** Next.js, TypeScript, React (팀 프로젝트에서 사용한 스택 추가)
 * **Content Text:**
     * **Project Meta:** Coworkers (팀 프로젝트, 업무 배정 및 현황 공유 SaaS 플랫폼, 기여도 25%)
@@ -106,7 +94,7 @@
 
 ---
 
-## 5. Footer Component
+## 4. Footer Component
 * **Path:** `src/components/Footer.tsx`
 * **UI Layout:** 상단 경계선(`border-t`) + 내부 컨테이너(`max-w-5xl`)에 Contact 정보 세로 배치
 * **Content:**

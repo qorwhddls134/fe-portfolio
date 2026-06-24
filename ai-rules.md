@@ -49,7 +49,7 @@ AI 에디터(Cursor, Claude 등)는 코드를 생성, 수정, 리팩토링할 �
 
 | | `src/components/` | `src/components/ui/` |
 |--|-------------------|------------------------|
-| **의미** | 페이지의 한 **구역** (Intro, Header, About …) | 섹션 이름과 무관한 **재사용 UI** |
+| **의미** | 페이지의 한 **구역** (Intro, Header, Education …) | 섹션 이름과 무관한 **재사용 UI** |
 | **판별** | 이름만 봐도 어느 섹션인지 알 수 있음 | `ProjectLink`, `ExternalLinkIcon`처럼 범용 |
 | **데이터** | `@/data/*` import 후 **표시만** | props로만 받음 (`data/` 직접 import 지양) |
 
@@ -64,11 +64,11 @@ AI 에디터(Cursor, Claude 등)는 코드를 생성, 수정, 리팩토링할 �
 
 ### 1-4. 네이밍·import
 
-* **Component Files:** 컴포넌트 파일명·컴포넌트 이름은 `PascalCase`. (예: `About.tsx`, `SectionNavLink.tsx`)
+* **Component Files:** 컴포넌트 파일명·컴포넌트 이름은 `PascalCase`. (예: `Projects.tsx`, `SectionNavLink.tsx`)
 * **Hooks:** `use` + `PascalCase` 파일명. (예: `useActiveSection.ts`)
 * **그 외 TS 파일:** `camelCase` 또는 도메인명. (예: `navigation.ts`, `scroll-spy.ts`)
 * **Fonts:** 자체 호스팅 폰트(`.woff2`)는 `src/fonts/`에 둔다. `public/fonts`나 컴포넌트 CSS `@font-face` 금지. Pretendard는 `layout.tsx`의 `next/font/local`만 사용.
-* **Path Alias:** 상대 경로(`../../`) 대신 `@/*`만 사용. (예: `import About from '@/components/About'`)
+* **Path Alias:** 상대 경로(`../../`) 대신 `@/*`만 사용. (예: `import Projects from '@/components/Projects'`)
 * **Export:** 페이지 섹션·`Header`·`Footer`는 `export default`. `components/ui/`·훅·유틸은 named export.
 
 ### 1-5. Intro 첫 화면 레이아웃
@@ -76,7 +76,7 @@ AI 에디터(Cursor, Claude 등)는 코드를 생성, 수정, 리팩토링할 �
 * Intro는 **`main` 밖**, Header 바로 아래 전용 래퍼에 둔다. (`page.tsx` + `INTRO_VIEWPORT_CLASS`)
 * 높이: `100dvh − 헤더(h-16)` → `globals.css`의 `--layout-header-height`와 `constants/layout.ts` 동기화.
 * 세로 중앙: 래퍼 안에서 Intro에 `flex-1 justify-center` (`INTRO_SECTION_CLASS`). `main` 상단 `py`로 Intro를 밀지 않는다.
-* About 이하 간격: `main`의 `pt-24` 등으로만 처리.
+* Projects 이하 간격: `main`의 `MAIN_AFTER_INTRO_CLASS` (`gap-20` / `md:gap-24`)로 처리.
 
 ---
 
@@ -84,13 +84,12 @@ AI 에디터(Cursor, Claude 등)는 코드를 생성, 수정, 리팩토링할 �
 * **TSDoc (파일 상단 1문장):** `src/` 아래 모든 `.ts`·`.tsx` 파일 최상단에 `/** … */`로 **역할을 한 문장**으로 적는다. (함수마다 중복 작성하지 않음)
 * **관심사의 분리:** §1 규칙 준수. `page.tsx`는 섹션 **조합만** (로직·마크업 덩어리 금지).
 * **Header:** 스크롤 스파이(`useActiveSection`)·햄버거 메뉴(`useMobileNavMenu`)·스크롤 잠금(`useBodyScrollLock`)·포털(`useMounted`)은 훅·`ui/`로 분리하고, `Header.tsx`는 조합·마크업만 유지한다. `MobileNavOverlay`에는 `navItems`를 props로 넘긴다. 활성 목차는 **`#${sectionId}-heading` top이 헤더 하단 + `scrollSpyExtraPx` 선을 지날 때** 전환한다(앵커 `scroll-mt`와 별도).
-* **About 섹션:** 화면 제목은 스펙대로 **"About Me"** (파일명 `About.tsx`와 구분).
 
 예시:
 
 ```typescript
-/** About Me 섹션과 카드 그리드 UI를 렌더합니다. */
-export default function About() {
+/** Projects 섹션 레이아웃과 프로젝트 목록 UI를 렌더합니다. */
+export default function Projects() {
   // ...
 }
 ```

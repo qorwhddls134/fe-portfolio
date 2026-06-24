@@ -19,5 +19,9 @@ export const INTRO_VIEWPORT_CLASS =
 /** 위 영역 안에서 Intro 콘텐츠를 세로·가로 중앙에 배치 */
 export const INTRO_SECTION_CLASS = "flex flex-1 flex-col justify-center gap-8";
 
+/** Intro 직후 main 영역 — Education · Projects 공통 레이아웃·간격 */
+export const MAIN_AFTER_INTRO_CLASS =
+  "mx-auto flex w-full max-w-5xl flex-col gap-20 px-4 pb-16 pt-12 md:gap-24 md:px-8 md:pb-24 md:pt-16";
+
 /** 앵커 스크롤 여백 — 헤더 높이에 맞춤 (모바일 짧은 헤더 / sm+ 기본) */
 export const SECTION_SCROLL_MARGIN_CLASS = "scroll-mt-16 sm:scroll-mt-20";
