@@ -1,22 +1,36 @@
 /** 요소가 뷰포트에 들어왔는지 IntersectionObserver로 감지합니다. */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 const DEFAULT_OPTIONS: IntersectionObserverInit = {
   threshold: 0.12,
   rootMargin: "0px 0px -8% 0px",
 };
 
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeToReducedMotion(onStoreChange: () => void) {
+  const motionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+  motionQuery.addEventListener("change", onStoreChange);
+  return () => motionQuery.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
 export function useInView(options: IntersectionObserverInit = DEFAULT_OPTIONS) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isInView, setIsInView] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [hasEnteredView, setHasEnteredView] = useState(false);
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    () => false,
+  );
+
+  const { threshold, rootMargin, root } = options;
 
   useEffect(() => {
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(motionQuery.matches);
-
-    if (motionQuery.matches) {
-      setIsInView(true);
+    if (prefersReducedMotion) {
       return;
     }
 
@@ -27,17 +41,19 @@ export function useInView(options: IntersectionObserverInit = DEFAULT_OPTIONS) {
 
     const observer = new IntersectionObserver(([entry]) => {
       if (entry?.isIntersecting) {
-        setIsInView(true);
+        setHasEnteredView(true);
         observer.disconnect();
       }
-    }, options);
+    }, { threshold, rootMargin, root });
 
     observer.observe(element);
 
     return () => {
       observer.disconnect();
     };
-  }, [options.threshold, options.rootMargin]);
+  }, [prefersReducedMotion, threshold, rootMargin, root]);
+
+  const isInView = prefersReducedMotion || hasEnteredView;
 
   return { ref, isInView, prefersReducedMotion };
 }
