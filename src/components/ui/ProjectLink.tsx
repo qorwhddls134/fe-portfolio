@@ -1,4 +1,7 @@
-/** URL 유무에 따라 외부 링크 또는 "준비 중" 문구를 렌더합니다. */
+/** URL 유무에 따라 외부 링크 pill 또는 "준비 중" 문구를 렌더합니다. */
+import { ExternalLinkIcon } from "@/components/ui/ExternalLinkIcon";
+import { PROJECT_LINK_PILL_CLASS } from "@/constants/project-animation";
+
 type ProjectLinkProps = {
   href: string | undefined;
   label: string;
@@ -18,9 +21,10 @@ export function ProjectLink({ href, label }: ProjectLinkProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-sm font-medium text-neutral-900 underline underline-offset-4 hover:text-neutral-600"
+      className={PROJECT_LINK_PILL_CLASS}
     >
       {label}
+      <ExternalLinkIcon size="sm" />
     </a>
   );
 }
